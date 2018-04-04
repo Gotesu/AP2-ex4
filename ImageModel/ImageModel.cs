@@ -47,20 +47,18 @@ namespace ImageModal
 
 		public void CopyFile(string sourcePath, string destPath, bool over = false)
 		{
+			// if needed, creates the destination folder
+			CreateFolder(destPath);
 			// copy the file
-			File.Copy(sourcePath, destPath, over);
+			File.Copy(sourcePath, destPath + @"\" + Path.GetFileName(sourcePath), over);
 		}
 
 		public void MoveFile(string sourcePath, string destPath)
 		{
+			// if needed, creates the destination folder
+			CreateFolder(destPath);
 			// move the file
-			File.Move(sourcePath, destPath);
-		}
-
-		public void MoveFolder(string sourcePath, string destPath)
-		{
-			// move the folder
-			Directory.Move(sourcePath, destPath);
+			File.Move(sourcePath, destPath + @"\" + Path.GetFileName(sourcePath));
 		}
 
 		public void DeleteFile(string path)
@@ -77,10 +75,14 @@ namespace ImageModal
 
 		public void CreateThumbnail(string sourcePath, string destPath)
 		{
+			// if needed, creates the destination folder
+			CreateFolder(destPath);
+			// get the source image
 			Image image = Image.FromFile(sourcePath);
+			// create the thumbnail
 			Image thumb = image.GetThumbnailImage(
 				thumbnailSize(), thumbnailSize(), () => false, IntPtr.Zero);
-			thumb.Save(destPath);
+			thumb.Save(destPath + @"\" + Path.GetFileName(sourcePath));
 		}
 
 		public void CreateFolder(string path, bool hidden = false)
@@ -106,13 +108,18 @@ namespace ImageModal
 			{
 				// create OutputDir folder
 				CreateFolder(OutputFolder() + @"\OutputDir", true);
+
 				// get the image date-taken
 				string date = DateTaken(path);
-				string[] parts = date.Split(':', ' ');
+				string[] parts = date.Split(':', ' ', '/');
+				// build the destination path
+				string destPath = parts[2] + @"\" + parts[1];
+
 				// copy the image
-				CopyFile(path, OutputFolder() + @"\OutputDir\" + parts[0] + @"\" + parts[1]);
+				CopyFile(path, OutputFolder() + @"\OutputDir\" + destPath);
 				// create a thumbnail
-				CreateThumbnail(path, OutputFolder() + @"\OutputDir\Thumbnails\" + parts[0] + @"\" + parts[1]);
+				CreateThumbnail(path, OutputFolder() + @"\OutputDir\Thumbnails\" + destPath);
+
 				// change result to true
 				result = true;
 				return null;
