@@ -13,11 +13,15 @@ using System.Threading.Tasks;
 
 namespace ImageService.Modal
 {
-    public class ImageServiceModal : IImageServiceModal
-    {
-        #region Members
-        private string m_OutputFolder = @"C:\Users\שירה רקובסקי\Desktop\new";            // The Output Folder
-        private int m_thumbnailSize = 120;              // The Size Of The Thumbnail Size
+	public class ImageServiceModal : IImageServiceModal
+	{
+		#region Members
+		// The Output Folder
+		private string m_OutputFolder = @"C:";
+		public string OutputFolder() { return m_OutputFolder; }
+		// The Size Of The Thumbnail Size
+		private int m_thumbnailSize = 120;
+		public int thumbnailSize() { return m_thumbnailSize; }
 
 		#endregion
 		public string DateTaken(string imagePath)
@@ -69,7 +73,7 @@ namespace ImageService.Modal
 		{
 			Image image = Image.FromFile(sourcePath);
 			Image thumb = image.GetThumbnailImage(
-				m_thumbnailSize, m_thumbnailSize, () => false, IntPtr.Zero);
+				thumbnailSize(), thumbnailSize(), () => false, IntPtr.Zero);
 			thumb.Save(destPath);
 		}
 
@@ -95,18 +99,20 @@ namespace ImageService.Modal
 			try
 			{
 				// create OutputDir folder
-				CreateFolder(m_OutputFolder + @"\OutputDir", true);
+				CreateFolder(OutputFolder() + @"\OutputDir", true);
 				// get the image date-taken
 				string date = DateTaken(path);
 				string[] parts = date.Split(':', ' ');
 				// copy the image
-				CopyFile(path, m_OutputFolder + @"\OutputDir\" + parts[0] + @"\" + parts[1]);
+				CopyFile(path, OutputFolder() + @"\OutputDir\" + parts[0] + @"\" + parts[1]);
 				// create a thumbnail
-				CreateThumbnail(path, m_OutputFolder + @"\OutputDir\Thumbnails\" + parts[0] + @"\" + parts[1]);
+				CreateThumbnail(path, OutputFolder() + @"\OutputDir\Thumbnails\" + parts[0] + @"\" + parts[1]);
 				// change result to true
 				result = true;
 				return null;
-			} catch(Exception e) {
+			}
+			catch (Exception e)
+			{
 				// return the exception message
 				return e.Message;
 			}
