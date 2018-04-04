@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageService", "ImageService\ImageService.csproj", "{A6239FEB-89A3-45E1-913D-5892A97CF5DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageService.Logging", "ClassLibrary1\ImageService.Logging.csproj", "{65AAFD71-D983-4A8D-B2F1-1FF7D17E44D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageService.Logging", "ImageService.Logging\ImageService.Logging.csproj", "{65AAFD71-D983-4A8D-B2F1-1FF7D17E44D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageServer", "Server\ImageServer.csproj", "{A8D69282-FF56-4F67-8519-FAC588752086}"
 EndProject

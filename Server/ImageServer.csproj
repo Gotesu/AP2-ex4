@@ -44,7 +44,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\ImageService.Logging.csproj">
+    <ProjectReference Include="..\ImageModel\ImageModel.csproj">
+      <Project>{f349a80f-6b48-4d3e-8896-2921b0927f0d}</Project>
+      <Name>ImageModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageService.Logging\ImageService.Logging.csproj">
       <Project>{65aafd71-d983-4a8d-b2f1-1ff7d17e44d5}</Project>
       <Name>ImageService.Logging</Name>
     </ProjectReference>
