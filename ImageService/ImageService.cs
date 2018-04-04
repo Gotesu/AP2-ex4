@@ -8,6 +8,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using ImageService.Logging;
 
 public enum ServiceState
 {
@@ -36,6 +37,7 @@ namespace ImageService
 {
     public partial class ImageService : ServiceBase
     {
+        private ILoggingService logger;
         public ImageService(string[] args)
         {
             InitializeComponent();
@@ -72,6 +74,16 @@ namespace ImageService
             // Update the service state to Running.  
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+            //initializing our Logger.
+            logger = new LoggingService();
+            //"listening" to the logger's messaging
+            logger.MessageRecieved += NewLogMessage;
+        }
+
+        /* operation triggered by message is writing it to the event log */
+        private void NewLogMessage(object sender, Logging.Modal.MessageRecievedEventArgs e)
+        {
+            IS_eventLogger.WriteEntry(e.Message);
         }
 
         protected override void OnStop()
@@ -86,6 +98,5 @@ namespace ImageService
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
-
     }
 }
