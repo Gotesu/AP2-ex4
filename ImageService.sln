@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageService.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageModel", "ImageModel\ImageModel.csproj", "{F349A80F-6B48-4D3E-8896-2921B0927F0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Controller\Controller.csproj", "{4519FF2C-2A61-4123-9A90-F67C667628BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F349A80F-6B48-4D3E-8896-2921B0927F0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F349A80F-6B48-4D3E-8896-2921B0927F0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F349A80F-6B48-4D3E-8896-2921B0927F0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4519FF2C-2A61-4123-9A90-F67C667628BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4519FF2C-2A61-4123-9A90-F67C667628BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4519FF2C-2A61-4123-9A90-F67C667628BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4519FF2C-2A61-4123-9A90-F67C667628BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

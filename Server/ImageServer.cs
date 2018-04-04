@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ImageService.Logging;
 using ImageModel;
+using ImageService.Controller;
 
 namespace ImageServer
 {
