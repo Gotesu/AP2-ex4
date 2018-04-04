@@ -11,9 +11,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ImageService.Modal
+namespace ImageModal
 {
-	public class ImageServiceModal : IImageServiceModal
+	public class ImageModal : IImageModal
 	{
 		#region Members
 		// The Output Folder
@@ -24,7 +24,7 @@ namespace ImageService.Modal
 		public int thumbnailSize() { return m_thumbnailSize; }
 		#endregion
 
-		public ImageServiceModal(string OutputFolder, int thumbnailSize)
+		public ImageModal(string OutputFolder, int thumbnailSize)
 		{
 			this.m_OutputFolder = OutputFolder;
 			this.m_thumbnailSize = thumbnailSize;
