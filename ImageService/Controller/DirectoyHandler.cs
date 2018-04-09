@@ -43,7 +43,10 @@ namespace ImageService.Controller.Handlers
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
-            throw new NotImplementedException();
+            Task t = new Task (() =>
+            {
+                m_controller.ExecuteCommand()
+            })
         }
     }
 }

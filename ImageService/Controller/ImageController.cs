@@ -30,12 +30,7 @@ namespace ImageService.Controller
                 resultSuccesful = false;
                 return "No such Command";
             }
-            //cant pass resultSuccesful directly to execute so we use boo
-            bool boo;
-            string output = command.Execute(args, out boo);
-            //initializing boo;
-            resultSuccesful = boo;
-            return output;
+            return command.Execute(args, out resultSuccesful);
         }
     }
 }
