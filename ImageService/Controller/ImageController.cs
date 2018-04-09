@@ -20,12 +20,22 @@ namespace ImageService.Controller
             m_modal = modal;                    // Storing the Modal Of The System
             commands = new Dictionary<int, ICommand>()
             {
-				// For Now will contain NEW_FILE_COMMAND
+                {(int)CommandEnum.NewFileCommand , new NewFileCommand(m_modal) } // used the enum
             };
         }
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
         {
-           // Write Code Here
+            ICommand command;
+           if (!commands.TryGetValue(commandID, out command)) {
+                resultSuccesful = false;
+                return "No such Command";
+            }
+            //cant pass resultSuccesful directly to execute so we use boo
+            bool boo;
+            string output = command.Execute(args, out boo);
+            //initializing boo;
+            resultSuccesful = boo;
+            return output;
         }
     }
 }

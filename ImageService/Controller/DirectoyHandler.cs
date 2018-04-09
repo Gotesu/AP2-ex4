@@ -21,7 +21,29 @@ namespace ImageService.Controller.Handlers
         #endregion
 
         public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
+        /// <summary>
+        /// contructor
+        /// </summary>
+        /// <param name="cont"> controller</param>
+        /// <param name="log"> logging modelt to notify event log</param>
+        public DirectoyHandler(IImageController cont, ILoggingService log)
+        {
+            m_dirWatcher = new FileSystemWatcher();
+            m_controller = cont;
+            m_logging = log;
+        }
 
-		// Implement Here!
+        public void StartHandleDirectory(string dirPath)
+        {
+            m_dirWatcher.Path = dirPath;
+            //we will be filtering nothing because we need to watch multiple types, filtering will be done on event.
+            //this is supposed to be more efficient than having 4 watchers to each folder.
+            m_dirWatcher.Filter = "*.*";
+        }
+
+        public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
