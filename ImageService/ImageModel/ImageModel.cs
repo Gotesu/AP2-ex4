@@ -11,9 +11,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ImageModal
+namespace ImageModel
 {
-	public class ImageModal : IImageModal
+	public class ImageModel : IImageModel
 	{
 		#region Members
 		// The Output Folder
@@ -24,7 +24,7 @@ namespace ImageModal
 		public int thumbnailSize() { return m_thumbnailSize; }
 		#endregion
 
-		public ImageModal(string OutputFolder, int thumbnailSize)
+		public ImageModel(string OutputFolder, int thumbnailSize)
 		{
 			this.m_OutputFolder = OutputFolder;
 			this.m_thumbnailSize = thumbnailSize;
@@ -122,7 +122,7 @@ namespace ImageModal
 
 				// change result to true
 				result = true;
-				return null;
+				return OutputFolder() + @"\OutputDir\" + destPath;
 			}
 			catch (Exception e)
 			{

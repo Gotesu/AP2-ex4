@@ -25,12 +25,11 @@ namespace ImageService.Controller
         }
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
         {
-            ICommand command;
-           if (!commands.TryGetValue(commandID, out command)) {
-                resultSuccesful = false;
-                return "No such Command";
-            }
-            return command.Execute(args, out resultSuccesful);
+           ICommand command;
+           if (commands.TryGetValue(commandID, out command))
+				return command.Execute(args, out resultSuccesful);
+			resultSuccesful = false;
+            return "error: Command ID not found";
         }
     }
 }
