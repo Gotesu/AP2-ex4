@@ -46,6 +46,16 @@
     <Compile Include="ImageController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImageModel\ImageModel.csproj">
+      <Project>{F349A80F-6B48-4D3E-8896-2921B0927F0D}</Project>
+      <Name>ImageModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageService.Infrastructure\ImageService.Infrastructure.csproj">
+      <Project>{06396ABB-2928-4A0A-B8D8-CCC3B62F560D}</Project>
+      <Name>ImageService.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

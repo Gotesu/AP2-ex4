@@ -19,5 +19,15 @@ namespace ImageServer
         #region Properties
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;          // The event that notifies about a new Command being recieved
         #endregion
+        
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="log"></param>
+        public ImageServer(ILoggingService log)
+        {
+            m_logging = log;
+            m_controller = new ImageController();
+        }
     }
 }

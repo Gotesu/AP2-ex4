@@ -1,5 +1,5 @@
-﻿using ImageService.Infrastructure;
-using ImageService.Modal;
+﻿using ImageModel;
+using ImageService.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace ImageService.Commands
 {
     public class NewFileCommand : ICommand
     {
-        private IImageServiceModal m_modal;
+        private IImageModel m_modal;
 
-        public NewFileCommand(IImageServiceModal modal)
+        public NewFileCommand(IImageModel modal)
         {
             m_modal = modal;            // Storing the Modal
         }

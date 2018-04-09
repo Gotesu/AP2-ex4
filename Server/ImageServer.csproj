@@ -40,17 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageServer.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="NewFileCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Controller\Controller.csproj">
-      <Project>{4519ff2c-2a61-4123-9a90-f67c667628bf}</Project>
-      <Name>Controller</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ImageModel\ImageModel.csproj">
-      <Project>{f349a80f-6b48-4d3e-8896-2921b0927f0d}</Project>
-      <Name>ImageModel</Name>
+    <ProjectReference Include="..\ImageService.Infrastructure\ImageService.Infrastructure.csproj">
+      <Project>{06396abb-2928-4a0a-b8d8-ccc3b62f560d}</Project>
+      <Name>ImageService.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageService.Logging\ImageService.Logging.csproj">
       <Project>{65aafd71-d983-4a8d-b2f1-1ff7d17e44d5}</Project>

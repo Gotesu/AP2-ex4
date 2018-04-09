@@ -44,10 +44,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandRecievedEventArgs.cs" />
-    <Compile Include="DirectoryCloseEventArgs.cs" />
-    <Compile Include="IImageModel.cs" />
-    <Compile Include="ImageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
