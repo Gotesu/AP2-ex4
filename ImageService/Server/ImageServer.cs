@@ -40,7 +40,7 @@ namespace ImageService.Server
             {
                 IDirectoryHandler dH = new DirectoryHandler(m_controller, m_logging);
                 CommandRecieved += dH.OnCommandRecieved;
-                dH.DirectoryClose += new EventHandler<DirectoryCloseEventArgs>(OnDirClosed);
+                dH.DirectoryClose += OnDirClosed;
                 i++;
             }
         }
@@ -48,7 +48,7 @@ namespace ImageService.Server
         public void OnDirClosed(object sender, DirectoryCloseEventArgs e)
         {
             IDirectoryHandler d = (IDirectoryHandler)sender;
-            CommandRecieved -= d.OnCommandRecieved;
+            d.DirectoryClose -= OnDirClosed;
         }
 
         private void stringToDirs(List<string> list, string config)
@@ -60,5 +60,6 @@ namespace ImageService.Server
             }
             return;
         }
+
     }
 }

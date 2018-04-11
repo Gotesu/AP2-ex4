@@ -9,6 +9,7 @@ using ImageService.Logging;
 using System.Text.RegularExpressions;
 using ImageService.Infrastructure.Enums;
 using ImageService.Model;
+using ImageService.Server;
 
 namespace ImageService.Controller.Handlers
 {
@@ -35,24 +36,25 @@ namespace ImageService.Controller.Handlers
 			m_logging = log;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="dirPath"></param>
 		public void StartHandleDirectory(string dirPath)
 		{
 			m_dirWatcher.Path = m_path = dirPath;
 			m_dirWatcher.Created += new FileSystemEventHandler(OnCreated);
-
 			//we will be filtering nothing because we need to watch multiple types, filtering will be done on event.
 			//this is supposed to be more efficient than having 4 watchers to each folder.
 			m_dirWatcher.Filter = "*.*";
-
 			// Start monitoring
 			m_dirWatcher.EnableRaisingEvents = true;
-
 		}
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+		/// <summary>
+		/// checks if the command is for this directory, and exceutes it.
+		/// </summary>
+		/// <param name="sender">the server, which invoked the event</param>
+		/// <param name="e">arguments of the given command</param>
 		public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
 		{
 			// check if command is meant for its directory
@@ -62,6 +64,8 @@ namespace ImageService.Controller.Handlers
 			{
 				// Stop monitoring
 				m_dirWatcher.EnableRaisingEvents = false;
+				// Stop getting commands
+				((ImageServer)sender).CommandRecieved -= OnCommandRecieved;
 				// update logger
 				m_logging.Log("DirectoyHandler is Closed", MessageTypeEnum.INFO);
 				// invoking the DirectoryClose event
@@ -71,9 +75,17 @@ namespace ImageService.Controller.Handlers
 			ExecuteCommand(e.CommandID, e.Args);
 		}
 
-		// Define the event handlers.
+		/// <summary>
+		/// check file type, and if relevant, executes NewFileCommand for the new file.
+		/// </summary>
+		/// <param name="source">the file system watcher, which invoked the event</param>
+		/// <param name="e">arguments of the file that was created</param>
 		public void OnCreated(object source, FileSystemEventArgs e)
 		{
+			// check file type
+			if (!( e.FullPath.EndsWith(".jpg") || e.FullPath.EndsWith(".png") ||
+				e.FullPath.EndsWith(".gif") || e.FullPath.EndsWith(".bmp") ))
+				return;
 			// set commandID
 			int CommandID = (int)CommandEnum.NewFileCommand;
 			// get path to arg[]
@@ -81,10 +93,15 @@ namespace ImageService.Controller.Handlers
 			ExecuteCommand(CommandID, args);
 		}
 
+		/// <summary>
+		/// executes a given command ussing the controller
+		/// </summary>
+		/// <param name="CommandID">an command enum</param>
+		/// <param name="args">arguments for the command</param>
 		private void ExecuteCommand(int CommandID, string[] args)
 		{
-			// handle command
-			Task t = new Task(() =>
+			// the task
+			Task t = Task.Run(() =>
 			{
 				string commandName = Enum.GetName(typeof(CommandEnum), CommandID);
 				// update logger of new command
