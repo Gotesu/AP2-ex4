@@ -19,7 +19,7 @@ namespace ImageService.Server
         #endregion
 
         #region Properties
-        public event EventHandler<ImageModel.CommandRecievedEventArgs> CommandRecieved;          // The event that notifies about a new Command being recieved
+        public event EventHandler<CommandRecievedEventArgs> CommandRecieved;          // The event that notifies about a new Command being recieved
         #endregion
         
         /// <summary>
@@ -36,19 +36,17 @@ namespace ImageService.Server
             int i = 0;
             while(dirs.ElementAt(i) != null)
             {
-
+                IDirectoryHandler dH = new DirectoryHandler(m_controller, m_logging);
+                CommandRecieved += dH.OnCommandRecieved;
+                dH.DirectoryClose += new EventHandler<DirectoryCloseEventArgs>(OnDirClosed);
+                i++;
             }
-            //need to do on each directory in app config
-            //DirectoryHandler dir = new DirectoyHandler(m_logging, m_controller);
-            //CommandRecieved += dir.OnCommandRecieved;
-            dir.DirectoryClosed += OnDirClosed();
         }
 
-        public void OnDirClosed(object sender)
+        public void OnDirClosed(object sender, DirectoryCloseEventArgs e)
         {
-            IDirectoryHandler d = (IDirectoryHandler) sender;
+            IDirectoryHandler d = (IDirectoryHandler)sender;
             CommandRecieved -= d.OnCommandRecieved;
         }
-
     }
 }

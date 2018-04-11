@@ -12,13 +12,13 @@ using ImageService.Model;
 
 namespace ImageService.Controller.Handlers
 {
-	public class DirectoyHandler : IDirectoryHandler
+	public class DirectoryHandler : IDirectoryHandler
 	{
 		#region Members
 		private IImageController m_controller;              // The Image Processing Controller
 		private ILoggingService m_logging;
 		private FileSystemWatcher m_dirWatcher;             // The Watcher of the Dir
-		private string m_path;                              // The Path of directory
+		private string m_path { get; set; }                             // The Path of directory
 		#endregion
 
 		public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
@@ -28,7 +28,7 @@ namespace ImageService.Controller.Handlers
 		/// </summary>
 		/// <param name="cont"> controller</param>
 		/// <param name="log"> logging modelt to notify event log</param>
-		public DirectoyHandler(IImageController cont, ILoggingService log)
+		public DirectoryHandler(IImageController cont, ILoggingService log)
 		{
 			m_dirWatcher = new FileSystemWatcher();
 			m_controller = cont;
@@ -37,7 +37,7 @@ namespace ImageService.Controller.Handlers
 
 		public void StartHandleDirectory(string dirPath)
 		{
-			m_dirWatcher.Path = dirPath;
+			m_dirWatcher.Path = m_path = dirPath;
 			m_dirWatcher.Created += new FileSystemEventHandler(OnCreated);
 
 			//we will be filtering nothing because we need to watch multiple types, filtering will be done on event.
