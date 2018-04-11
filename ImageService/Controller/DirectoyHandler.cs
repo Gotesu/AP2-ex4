@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ImageService.Logging;
 using System.Text.RegularExpressions;
-using ImageModel;
 using ImageService.Infrastructure.Enums;
+using ImageService.Model;
 
 namespace ImageService.Controller.Handlers
 {
@@ -48,7 +48,11 @@ namespace ImageService.Controller.Handlers
 			m_dirWatcher.EnableRaisingEvents = true;
 
 		}
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 		public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
 		{
 			// check if command is meant for its directory

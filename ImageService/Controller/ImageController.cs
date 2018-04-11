@@ -1,7 +1,8 @@
-﻿using ImageModel;
+﻿
 using ImageService.Commands;
 using ImageService.Infrastructure;
 using ImageService.Infrastructure.Enums;
+using ImageService.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
