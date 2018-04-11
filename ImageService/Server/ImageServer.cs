@@ -7,6 +7,7 @@ using ImageService.Logging;
 using ImageService.Controller;
 using ImageService.Controller.Handlers;
 using ImageService.Model;
+using System.Configuration;
 
 namespace ImageService.Server
 {
@@ -29,8 +30,8 @@ namespace ImageService.Server
         public ImageServer(ILoggingService log)
         {
             dirs = new List<string>();
-            string dest = "C:" ;
-            int thumbSize = 0;
+            string dest = ConfigurationManager.AppSettings["Handler"];
+            int thumbSize = Int32.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
             m_logging = log;
             m_controller = new ImageController(new ImageModel(dest,thumbSize));
             int i = 0;
