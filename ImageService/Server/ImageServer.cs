@@ -8,6 +8,7 @@ using ImageService.Controller;
 using ImageService.Controller.Handlers;
 using ImageService.Model;
 using System.Configuration;
+using ImageService.Infrastructure.Enums;
 
 namespace ImageService.Server
 {
@@ -45,7 +46,18 @@ namespace ImageService.Server
             }
         }
 
-        public void OnDirClosed(object sender, DirectoryCloseEventArgs e)
+		public void CloseServer()
+		{   // invoke close all directories CommandRecieved Event
+			CommandRecievedEventArgs args = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, null, "*");
+			CommandRecieved.Invoke(this, args);
+			// wait for all handlers to close
+			while (CommandRecieved.GetInvocationList().Length > 0)
+				System.Threading.Thread.Sleep(1000);
+			// update logger
+			m_logging.Log("Server is Closed", MessageTypeEnum.INFO);
+		}
+
+		public void OnDirClosed(object sender, DirectoryCloseEventArgs e)
         {
             IDirectoryHandler d = (IDirectoryHandler)sender;
             d.DirectoryClose -= OnDirClosed;

@@ -19,7 +19,9 @@ namespace ImageService.Controller.Handlers
 		private IImageController m_controller;              // The Image Processing Controller
 		private ILoggingService m_logging;
 		private FileSystemWatcher m_dirWatcher;             // The Watcher of the Dir
-		private string m_path { get; set; }                             // The Path of directory
+		private string m_path { get; set; }                 // The Path of directory
+		private int m_tasks;								// the number of running tasks
+		private Object tLock = new Object();
 		#endregion
 
 		public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
@@ -34,6 +36,7 @@ namespace ImageService.Controller.Handlers
 			m_dirWatcher = new FileSystemWatcher();
 			m_controller = cont;
 			m_logging = log;
+			m_tasks = 0;
 		}
 
 		/// <summary>
@@ -62,17 +65,28 @@ namespace ImageService.Controller.Handlers
 				return;
 			if (CommandEnum.CloseCommand.Equals(e.CommandID))
 			{
+				CloseHandler(sender);
+				return;
+			}
+			ExecuteCommand(e.CommandID, e.Args);
+		}
+
+		public void CloseHandler(object sender)
+		{
+			Task t = Task.Run(() =>
+			{
 				// Stop monitoring
 				m_dirWatcher.EnableRaisingEvents = false;
 				// Stop getting commands
 				((ImageServer)sender).CommandRecieved -= OnCommandRecieved;
+				// wait for all task to end
+				while (m_tasks > 0)
+					System.Threading.Thread.Sleep(1000);
 				// update logger
 				m_logging.Log("DirectoyHandler is Closed", MessageTypeEnum.INFO);
 				// invoking the DirectoryClose event
 				DirectoryClose.Invoke(this, new DirectoryCloseEventArgs(m_path, "DirectoyHandler is Closed"));
-				return;
-			}
-			ExecuteCommand(e.CommandID, e.Args);
+			});
 		}
 
 		/// <summary>
@@ -103,6 +117,9 @@ namespace ImageService.Controller.Handlers
 			// the task
 			Task t = Task.Run(() =>
 			{
+				// update runnig tasks value
+				lock (tLock)
+					m_tasks++;
 				string commandName = Enum.GetName(typeof(CommandEnum), CommandID);
 				// update logger of new command
 				m_logging.Log("DirectoyHandler received a " + commandName,
@@ -116,6 +133,9 @@ namespace ImageService.Controller.Handlers
 						MessageTypeEnum.INFO);
 				else
 					m_logging.Log(message, MessageTypeEnum.FAIL);
+				// update runnig tasks value
+				lock (tLock)
+					m_tasks--;
 			});
 		}
 	}
