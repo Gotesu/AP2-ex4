@@ -116,10 +116,11 @@ namespace ImageService.Model
 				// build the destination path
 				string destPath = parts[2] + @"\" + parts[1];
 
-				// create a thumbnail
-				CreateThumbnail(path, OutputFolder() + @"\OutputDir\Thumbnails\" + destPath);
 				// move the image
 				MoveFile(path, OutputFolder() + @"\OutputDir\" + destPath);
+				// create a thumbnail
+				CreateThumbnail(OutputFolder() + @"\OutputDir\" + destPath,
+					OutputFolder() + @"\OutputDir\Thumbnails\" + destPath);
 
 				// change result to true
 				result = true;
