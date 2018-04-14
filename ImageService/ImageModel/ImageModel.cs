@@ -84,6 +84,7 @@ namespace ImageService.Model
 				thumbnailSize(), thumbnailSize(), () => false, IntPtr.Zero);
 			// save the thumbnail to destPath
 			thumb.Save(Path.ChangeExtension(destPath + @"\" + Path.GetFileName(sourcePath), "thumb"));
+			image.Dispose();
 		}
 
 		public void CreateFolder(string path, bool hidden = false)
@@ -116,11 +117,11 @@ namespace ImageService.Model
 				// build the destination path
 				string destPath = parts[2] + @"\" + parts[1];
 
+				// create a thumbnail
+				CreateThumbnail(path, OutputFolder() + @"\OutputDir\Thumbnails\" + destPath);
 				// move the image
 				MoveFile(path, OutputFolder() + @"\OutputDir\" + destPath);
-				// create a thumbnail
-				CreateThumbnail(OutputFolder() + @"\OutputDir\" + destPath,
-					OutputFolder() + @"\OutputDir\Thumbnails\" + destPath);
+
 
 				// change result to true
 				result = true;
