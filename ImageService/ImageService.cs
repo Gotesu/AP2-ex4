@@ -92,7 +92,7 @@ namespace ImageService
 
         protected override void OnStop()
         {
-            server.CloseServer();
+            //server.CloseServer();
             // Update the service state to Start Pending.  
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;

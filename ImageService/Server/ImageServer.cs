@@ -17,7 +17,6 @@ namespace ImageService.Server
         #region Members
         private IImageController m_controller;
         private ILoggingService m_logging;
-        private List<string> dirs;
         #endregion
 
         #region Properties

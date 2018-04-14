@@ -45,7 +45,8 @@ namespace ImageService.Controller.Handlers
 		/// <param name="dirPath"></param>
 		public void StartHandleDirectory(string dirPath)
 		{
-			m_dirWatcher.Path = m_path = dirPath;
+			m_path = dirPath;
+            m_dirWatcher.Path = m_path;
 			m_dirWatcher.Created += new FileSystemEventHandler(OnCreated);
 			//we will be filtering nothing because we need to watch multiple types, filtering will be done on event.
 			//this is supposed to be more efficient than having 4 watchers to each folder.
@@ -97,9 +98,9 @@ namespace ImageService.Controller.Handlers
 		public void OnCreated(object source, FileSystemEventArgs e)
 		{
 			// check file type
-			if (!( e.FullPath.EndsWith(".jpg") || e.FullPath.EndsWith(".png") ||
-				e.FullPath.EndsWith(".gif") || e.FullPath.EndsWith(".bmp") ))
-				return;
+			//if (!( e.FullPath.EndsWith(".jpg") || e.FullPath.EndsWith(".png") ||
+			//	e.FullPath.EndsWith(".gif") || e.FullPath.EndsWith(".bmp") ))
+			//	return;
 			// set commandID
 			int CommandID = (int)CommandEnum.NewFileCommand;
 			// get path to arg[]
