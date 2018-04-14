@@ -30,19 +30,16 @@ namespace ImageService.Server
         /// <param name="log"></param>
         public ImageServer(ILoggingService log)
         {
-            dirs = new List<string>();
-            string dest = ConfigurationManager.AppSettings["Handler"];
-            stringToDirs(dirs, dest);
+            string[] dest = ConfigurationManager.AppSettings["Handler"].Split(';');
             int thumbSize = Int32.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
             m_logging = log;
-            m_controller = new ImageController(new ImageModel(dest,thumbSize));
-            int i = 0;
-            while(dirs.ElementAt(i) != null)
+            m_controller = new ImageController(new ImageModel(
+                ConfigurationManager.AppSettings["OutputDir"],thumbSize));
+            for (int i = 0; i < dest.Count(); i++)
             {
                 IDirectoryHandler dH = new DirectoryHandler(m_controller, m_logging);
                 CommandRecieved += dH.OnCommandRecieved;
                 dH.DirectoryClose += OnDirClosed;
-                i++;
             }
         }
 
@@ -61,16 +58,6 @@ namespace ImageService.Server
         {
             IDirectoryHandler d = (IDirectoryHandler)sender;
             d.DirectoryClose -= OnDirClosed;
-        }
-
-        private void stringToDirs(List<string> list, string config)
-        {
-            string[] tokens = config.Split(';');
-            for (int i = 0; i < tokens.Length; i++)
-            {
-                list.Add(tokens[i]);
-            }
-            return;
         }
 
     }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using ImageService.Logging;
 using System.Configuration;
+using ImageService.Server;
 
 public enum ServiceState
 {
@@ -38,6 +39,7 @@ namespace ImageService
 {
     public partial class ImageService : ServiceBase
     {
+        private ImageServer server;
         private ILoggingService logger;
         public ImageService(string[] args)
         {
@@ -79,6 +81,7 @@ namespace ImageService
             logger = new LoggingService();
             //"listening" to the logger's messaging
             logger.MessageRecieved += NewLogMessage;
+            server = new ImageServer(logger);
         }
 
         /* operation triggered by message is writing it to the event log */
@@ -89,6 +92,7 @@ namespace ImageService
 
         protected override void OnStop()
         {
+            server.CloseServer();
             // Update the service state to Start Pending.  
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
