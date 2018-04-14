@@ -97,11 +97,11 @@ namespace ImageService.Controller.Handlers
 		/// <param name="e">arguments of the file that was created</param>
 		public void OnCreated(object source, FileSystemEventArgs e)
 		{
-			// check file type
-			//if (!( e.FullPath.EndsWith(".jpg") || e.FullPath.EndsWith(".png") ||
-			//	e.FullPath.EndsWith(".gif") || e.FullPath.EndsWith(".bmp") ))
-			//	return;
-			// set commandID
+			//check file type
+			if (!( e.FullPath.EndsWith(".jpg") || e.FullPath.EndsWith(".png") ||
+			e.FullPath.EndsWith(".gif") || e.FullPath.EndsWith(".bmp") ))
+				return;
+            //set commandID
 			int CommandID = (int)CommandEnum.NewFileCommand;
 			// get path to arg[]
 			string[] args = { e.FullPath };
