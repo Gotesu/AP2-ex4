@@ -64,7 +64,7 @@ namespace ImageService.Controller.Handlers
 			// check if command is meant for its directory
 			if (!e.RequestDirPath.Equals(m_path) && !e.RequestDirPath.Equals("*"))
 				return;
-			if (CommandEnum.CloseCommand.Equals(e.CommandID))
+			if (e.CommandID.Equals((int) CommandEnum.CloseCommand))
 			{
 				CloseHandler(sender);
 				return;

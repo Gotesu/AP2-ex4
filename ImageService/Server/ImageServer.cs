@@ -48,7 +48,7 @@ namespace ImageService.Server
 			CommandRecievedEventArgs args = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, null, "*");
 			CommandRecieved.Invoke(this, args);
 			// wait for all handlers to close
-			while (CommandRecieved.GetInvocationList().Length > 0)
+			while ((CommandRecieved!= null) && (CommandRecieved.GetInvocationList().Length > 0))
 				System.Threading.Thread.Sleep(1000);
 			// update logger
 			m_logging.Log("Server is Closed", MessageTypeEnum.INFO);
