@@ -103,5 +103,11 @@ namespace ImageService
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
+        internal void TestStartupAndStop(string[] args)
+        {
+            this.OnStart(args);
+            Console.ReadLine();
+            this.OnStop();
+        }
     }
 }
