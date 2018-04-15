@@ -45,14 +45,21 @@ namespace ImageService.Controller.Handlers
 		/// <param name="dirPath">A path string for the directory</param>
 		public void StartHandleDirectory(string dirPath)
 		{
-			m_path = dirPath;
-            m_dirWatcher.Path = m_path;
-			m_dirWatcher.Created += new FileSystemEventHandler(OnCreated);
-			//we will be filtering nothing because we need to watch multiple types, filtering will be done on event.
-			//this is supposed to be more efficient than having 4 watchers to each folder.
-			m_dirWatcher.Filter = "*.*";
-			// Start monitoring
-			m_dirWatcher.EnableRaisingEvents = true;
+            try
+            {
+                m_path = dirPath;
+                m_dirWatcher.Path = m_path;
+                m_dirWatcher.Created += new FileSystemEventHandler(OnCreated);
+                //we will be filtering nothing because we need to watch multiple types, filtering will be done on event.
+                //this is supposed to be more efficient than having 4 watchers to each folder.
+                m_dirWatcher.Filter = "*.*";
+                // Start monitoring
+                m_dirWatcher.EnableRaisingEvents = true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 		}
 
 		/// <summary>
