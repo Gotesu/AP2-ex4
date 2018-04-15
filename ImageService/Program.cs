@@ -12,13 +12,13 @@ namespace ImageService
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        /*
+        
         static void Main(string[] args)
         {
             ServiceBase[] ServicesToRun = new ServiceBase[] { new ImageService(args) };
             ServiceBase.Run(ServicesToRun);
         }
-        */
+        /*
         static void Main(string[] args)
         {
             if (Environment.UserInteractive)
@@ -32,5 +32,6 @@ namespace ImageService
                 ServiceBase.Run(ServicesToRun);
             }
         }
+        */
     }
 }

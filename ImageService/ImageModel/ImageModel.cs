@@ -77,15 +77,20 @@ namespace ImageService.Model
 		{
 			// if needed, creates the destination folder
 			CreateFolder(destPath);
-			// get the source image
-			Image image = Image.FromFile(sourcePath);
-			// create the thumbnail
-			Image thumb = image.GetThumbnailImage(
-				thumbnailSize(), thumbnailSize(), () => false, IntPtr.Zero);
-			// save the thumbnail to destPath
-			thumb.Save(Path.ChangeExtension(destPath + @"\" + Path.GetFileName(sourcePath), "thumb"));
-			image.Dispose();
-		}
+            // get the source image
+            using (FileStream sourceStream = File.Open(sourcePath, FileMode.Open))
+            {
+                Image image = Image.FromStream(sourceStream);
+                // create the thumbnail
+                Image thumb = image.GetThumbnailImage(
+                    thumbnailSize(), thumbnailSize(), () => false, IntPtr.Zero);
+                // save the thumbnail to destPath
+                string full = destPath + @"\" + Path.GetFileName(sourcePath);
+                thumb.Save(full);
+                image.Dispose();
+            }
+
+        }
 
 		public void CreateFolder(string path, bool hidden = false)
 		{
@@ -111,7 +116,7 @@ namespace ImageService.Model
 				// create OutputDir folder
 				CreateFolder(OutputFolder() + @"\OutputDir", true);
 
-				// get the image date-taken
+                // get the image date-taken
 				string date = DateTaken(path);
 				string[] parts = date.Split(':', ' ', '/');
 				// build the destination path

@@ -99,7 +99,9 @@ namespace ImageService.Controller.Handlers
 		{
 			//check file type
 			if (!( e.FullPath.EndsWith(".jpg") || e.FullPath.EndsWith(".png") ||
-			e.FullPath.EndsWith(".gif") || e.FullPath.EndsWith(".bmp") ))
+			e.FullPath.EndsWith(".gif") || e.FullPath.EndsWith(".bmp") ||
+            e.FullPath.EndsWith(".JPG") || e.FullPath.EndsWith(".PNG") ||
+            e.FullPath.EndsWith(".GIF") || e.FullPath.EndsWith(".BMP") ))
 				return;
             //set commandID
 			int CommandID = (int)CommandEnum.NewFileCommand;
