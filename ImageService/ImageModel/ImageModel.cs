@@ -106,20 +106,44 @@ namespace ImageService.Model
 		{
 			// if needed, creates the destination folder
 			CreateFolder(destPath);
-            // get the source image
-            using (FileStream sourceStream = File.Open(sourcePath, FileMode.Open))
-            {
-                Image image = Image.FromStream(sourceStream);
-                // create the thumbnail
-                Image thumb = image.GetThumbnailImage(
-                    thumbnailSize(), thumbnailSize(), () => false, IntPtr.Zero);
-                // save the thumbnail to destPath
-                string full = destPath + @"\" + Path.GetFileName(sourcePath);
-                thumb.Save(full);
-                image.Dispose();
-            }
+			// get the source image
+			using (FileStream fs = File.OpenRead(sourcePath))
+			{
+				// get the image bitmap
+				Bitmap bm = new Bitmap(sourcePath);
+				// Check if the Orientation property exist in the image data
+				if (bm.PropertyIdList.Contains(0x112))
+				{
+					// get the Orientation property
+					PropertyItem pr = bm.GetPropertyItem(0x112);
+					if ((pr.Type == 3) && (pr.Len == 2))
+						// check the property value to know how to rotate the image
+						switch (BitConverter.ToUInt16(pr.Value, 0))
+						{
+							case 8: // need to rotate 270
+								bm.RotateFlip(RotateFlipType.Rotate270FlipNone);
+								break;
+							case 3: // need to rotate 180
+								bm.RotateFlip(RotateFlipType.Rotate180FlipNone);
+								break;
+							case 6: // need to rotate 90
+								bm.RotateFlip(RotateFlipType.Rotate90FlipNone);
+								break;
+							default:
+								break;
+						}
+				}
+				// create the thumbnail
+				Image thumb = bm.GetThumbnailImage(
+					thumbnailSize(), thumbnailSize(), () => false, IntPtr.Zero);
+				// save the thumbnail to destPath
+				string full = destPath + @"\" + Path.GetFileName(sourcePath);
+				thumb.Save(full);
+				// dispose the image
+				bm.Dispose();
+			}
 
-        }
+		}
 
 		/// <summary>
 		/// The function get a string path to new folder, and if the
@@ -158,7 +182,7 @@ namespace ImageService.Model
 				// create OutputDir folder
 				CreateFolder(OutputFolder() + @"\OutputDir", true);
 
-                // get the image date-taken
+				// get the image date-taken
 				string date = DateTaken(path);
 				string[] parts = date.Split(':', ' ', '/');
 				// build the destination path
