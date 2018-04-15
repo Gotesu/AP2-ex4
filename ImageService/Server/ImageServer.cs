@@ -12,6 +12,10 @@ using ImageService.Infrastructure.Enums;
 
 namespace ImageService.Server
 {
+    /// <summary>
+    /// ImageServer is the server that sends handlers to handle directories given in appconfig (for the time being)
+    /// the server communicates with the handlers via eventHandlers
+    /// </summary>
     public class ImageServer
     {
         #region Members
@@ -29,11 +33,16 @@ namespace ImageService.Server
         /// <param name="log"></param>
         public ImageServer(ILoggingService log)
         {
+            //taking paths given in the config
             string[] dest = ConfigurationManager.AppSettings["Handler"].Split(';');
+            //taking thumbsize from config
             int thumbSize = Int32.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
             m_logging = log;
+            //one controller to rule them all
             m_controller = new ImageController(new ImageModel(
                 ConfigurationManager.AppSettings["OutputDir"],thumbSize));
+            //enlisting our newly created handlers to command recieved and our OnDirClosed(server method) to closing
+            //event of handlers
             for (int i = 0; i < dest.Count(); i++)
             {
                 IDirectoryHandler dH = new DirectoryHandler(m_controller, m_logging);
@@ -42,7 +51,9 @@ namespace ImageService.Server
 				dH.StartHandleDirectory(dest[i]);
 			}
         }
-
+        /// <summary>
+        /// method to close the server by commanding the handlers to close first
+        /// </summary>
 		public void CloseServer()
 		{   // invoke close all directories CommandRecieved Event
 			CommandRecievedEventArgs args = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, null, "*");
@@ -53,7 +64,11 @@ namespace ImageService.Server
 			// update logger
 			m_logging.Log("Server is Closed", MessageTypeEnum.INFO);
 		}
-
+        /// <summary>
+        /// OnDirClosed is summoned by the DirClose event and the method gets the directory from the event handler list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 		public void OnDirClosed(object sender, DirectoryCloseEventArgs e)
         {
             IDirectoryHandler d = (IDirectoryHandler)sender;
