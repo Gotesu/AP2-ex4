@@ -25,12 +25,12 @@ namespace ImageService.Controller.Handlers
 		#endregion
 
 		public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
-		
+
 		/// <summary>
-		/// contructor
+		/// Contructor for DirectoryHandler.
 		/// </summary>
-		/// <param name="cont"> controller</param>
-		/// <param name="log"> logging modelt to notify event log</param>
+		/// <param name="cont">The controller to execute commands</param>
+		/// <param name="log">The logging modelt to notify event log</param>
 		public DirectoryHandler(IImageController cont, ILoggingService log)
 		{
 			m_dirWatcher = new FileSystemWatcher();
@@ -40,9 +40,9 @@ namespace ImageService.Controller.Handlers
 		}
 
 		/// <summary>
-		/// 
+		/// The function activates the DirectoryHandler, with a given directory path string.
 		/// </summary>
-		/// <param name="dirPath"></param>
+		/// <param name="dirPath">A path string for the directory</param>
 		public void StartHandleDirectory(string dirPath)
 		{
 			m_path = dirPath;
@@ -54,11 +54,12 @@ namespace ImageService.Controller.Handlers
 			// Start monitoring
 			m_dirWatcher.EnableRaisingEvents = true;
 		}
+
 		/// <summary>
-		/// checks if the command is for this directory, and exceutes it.
+		/// The function checks if the command is for this directory, and if so - exceutes it.
 		/// </summary>
-		/// <param name="sender">the server, which invoked the event</param>
-		/// <param name="e">arguments of the given command</param>
+		/// <param name="sender">The server, which invoked the event</param>
+		/// <param name="e">Arguments of the given command</param>
 		public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
 		{
 			// check if command is meant for its directory
@@ -72,6 +73,10 @@ namespace ImageService.Controller.Handlers
 			ExecuteCommand(e.CommandID, e.Args);
 		}
 
+		/// <summary>
+		/// The function closes the DirectoryHandler.
+		/// </summary>
+		/// <param name="sender">The server, which invoked the event</param>
 		public void CloseHandler(object sender)
 		{
 			Task t = Task.Run(() =>
@@ -91,10 +96,10 @@ namespace ImageService.Controller.Handlers
 		}
 
 		/// <summary>
-		/// check file type, and if relevant, executes NewFileCommand for the new file.
+		/// The function checks file type, and if relevant, executes NewFileCommand for the new file.
 		/// </summary>
-		/// <param name="source">the file system watcher, which invoked the event</param>
-		/// <param name="e">arguments of the file that was created</param>
+		/// <param name="source">The file system watcher, which invoked the event</param>
+		/// <param name="e">Arguments of the file that was created</param>
 		public void OnCreated(object source, FileSystemEventArgs e)
 		{
 			//check file type
@@ -111,10 +116,10 @@ namespace ImageService.Controller.Handlers
 		}
 
 		/// <summary>
-		/// executes a given command ussing the controller
+		/// The function executes a given command ussing the controller.
 		/// </summary>
-		/// <param name="CommandID">an command enum</param>
-		/// <param name="args">arguments for the command</param>
+		/// <param name="CommandID">An command enum</param>
+		/// <param name="args">Arguments for the command</param>
 		private void ExecuteCommand(int CommandID, string[] args)
 		{
 			// the task
