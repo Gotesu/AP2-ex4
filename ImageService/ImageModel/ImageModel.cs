@@ -24,6 +24,11 @@ namespace ImageService.Model
 		public int thumbnailSize() { return m_thumbnailSize; }
 		#endregion
 
+		/// <summary>
+		/// Constructor for ImageModel
+		/// </summary>
+		/// <param name="OutputFolder">String path to the output floder</param>
+		/// <param name="thumbnailSize">The thumbnail size (for CreateThumbnail function)</param>
 		public ImageModel(string OutputFolder, int thumbnailSize)
 		{
 			this.m_OutputFolder = OutputFolder;
@@ -45,6 +50,12 @@ namespace ImageService.Model
 			return date;
 		}
 
+		/// <summary>
+		/// The function copy a file from sourcePath to destPath.
+		/// </summary>
+		/// <param name="sourcePath">The string for file's source path</param>
+		/// <param name="destPath">The string for file's destination path</param>
+		/// <param name="over">A boolean value, if to override an existing file in destination path</param>
 		public void CopyFile(string sourcePath, string destPath, bool over = false)
 		{
 			// if needed, creates the destination folder
@@ -53,6 +64,11 @@ namespace ImageService.Model
 			File.Copy(sourcePath, destPath + @"\" + Path.GetFileName(sourcePath), over);
 		}
 
+		/// <summary>
+		/// The function move a file from sourcePath to destPath.
+		/// </summary>
+		/// <param name="sourcePath">The string for file's source path</param>
+		/// <param name="destPath">The string for file's destination path</param>
 		public void MoveFile(string sourcePath, string destPath)
 		{
 			// if needed, creates the destination folder
@@ -61,18 +77,31 @@ namespace ImageService.Model
 			File.Move(sourcePath, destPath + @"\" + Path.GetFileName(sourcePath));
 		}
 
+		/// <summary>
+		/// The function delete a file.
+		/// </summary>
+		/// <param name="path">The string for file's path</param>
 		public void DeleteFile(string path)
 		{
 			// delete the file
 			File.Delete(path);
 		}
 
+		/// <summary>
+		/// The function delete a folder.
+		/// </summary>
+		/// <param name="path">The string for folder's path</param>
 		public void DeleteFolder(string path)
 		{
 			// delete the folder
 			Directory.Delete(path);
 		}
 
+		/// <summary>
+		/// The function creates a thumbnail from a source image, with size of thumbnailSize.
+		/// </summary>
+		/// <param name="sourcePath">The string for image's source path</param>
+		/// <param name="destPath">The string for thumbnail's destination path</param>
 		public void CreateThumbnail(string sourcePath, string destPath)
 		{
 			// if needed, creates the destination folder
@@ -92,6 +121,12 @@ namespace ImageService.Model
 
         }
 
+		/// <summary>
+		/// The function get a string path to new folder, and if the
+		/// directory doesn't exist - it's been created.
+		/// </summary>
+		/// <param name="path">The path for the new directory</param>
+		/// <param name="hidden">A boolean value, if to create the directory as hidden directory</param>
 		public void CreateFolder(string path, bool hidden = false)
 		{
 			// check if the folder exists
@@ -107,6 +142,13 @@ namespace ImageService.Model
 			}
 		}
 
+		/// <summary>
+		/// The function add an image to the database, by moving it from the given path
+		/// to the output folder, and creating a thumbnail for it.
+		/// </summary>
+		/// <param name="path">The string for image's source path</param>
+		/// <param name="result">If succeed - set to true, else - set to false</param>
+		/// <returns>If succeed - the image's new path, else - an error message</returns>
 		public string AddFile(string path, out bool result)
 		{
 			// defult status, until all the stages are done
