@@ -13,8 +13,8 @@ namespace ImageService.Controller
 {
     public class ImageController : IImageController
     {
-        private IImageModel m_modal;                      // The Modal Object
-        private Dictionary<int, ICommand> commands;
+        private IImageModel m_modal;                      // The Model Object
+        private Dictionary<int, ICommand> commands;     //dictionary between int and command
 
         public ImageController(IImageModel modal)
         {
@@ -24,6 +24,13 @@ namespace ImageService.Controller
                 {(int)CommandEnum.NewFileCommand , new NewFileCommand(m_modal) } // used the enum
             };
         }
+        /// <summary>
+        /// Execute command, checks if command is in map and if yes sends it to execution
+        /// </summary>
+        /// <param name="commandID">map in value</param>
+        /// <param name="args"> argument string</param>
+        /// <param name="resultSuccesful"> bool to check success of execution</param>
+        /// <returns></returns>
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
         {
            ICommand command;

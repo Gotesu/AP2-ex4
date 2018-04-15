@@ -44,6 +44,7 @@ namespace ImageService
         public ImageService(string[] args)
         {
             InitializeComponent();
+            //taking sourceName and logName from config
             string eventSourceName = ConfigurationManager.AppSettings["SourceName"];
             string logName = ConfigurationManager.AppSettings["LogName"];
             if (args.Count() > 0)
@@ -66,6 +67,10 @@ namespace ImageService
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
 
+        /// <summary>
+        /// onStart method, when service start, initializes the server and starts the listening to directiries.
+        /// </summary>
+        /// <param name="args"></param>
         protected override void OnStart(string[] args)
         {
             // Update the service state to Start Pending.  
@@ -89,7 +94,9 @@ namespace ImageService
         {
             IS_eventLogger.WriteEntry(e.Message);
         }
-
+        /// <summary>
+        /// onStop method, when services stop
+        /// </summary>
         protected override void OnStop()
         {
             server.CloseServer();
@@ -103,6 +110,10 @@ namespace ImageService
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
+        /// <summary>
+        /// this method is meant to aid test the service on start by making it a console application like run.
+        /// </summary>
+        /// <param name="args"></param>
         internal void TestStartupAndStop(string[] args)
         {
             this.OnStart(args);
