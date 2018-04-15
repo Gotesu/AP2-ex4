@@ -48,7 +48,14 @@ namespace ImageService.Server
                 IDirectoryHandler dH = new DirectoryHandler(m_controller, m_logging);
                 CommandRecieved += dH.OnCommandRecieved;
                 dH.DirectoryClose += OnDirClosed;
-				dH.StartHandleDirectory(dest[i]);
+                try
+                {
+                    dH.StartHandleDirectory(dest[i]);
+                }
+                catch (Exception e)
+                {
+                    m_logging.Log("directory" + dest[i] + "couldn't be handeled", MessageTypeEnum.FAIL);
+                }
 			}
         }
         /// <summary>
