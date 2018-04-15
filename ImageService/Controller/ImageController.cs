@@ -14,17 +14,29 @@ namespace ImageService.Controller
     public class ImageController : IImageController
     {
         private IImageModel m_modal;                      // The Modal Object
-        private Dictionary<int, ICommand> commands;
+        private Dictionary<int, ICommand> commands;       // The commands dictionary
 
-        public ImageController(IImageModel modal)
+		/// <summary>
+		/// Contructor for ImageController.
+		/// </summary>
+		/// <param name="modal">An ImageModel, to create the ICommands</param>
+		public ImageController(IImageModel modal)
         {
-            m_modal = modal;                    // Storing the Modal Of The System
-            commands = new Dictionary<int, ICommand>()
+            m_modal = modal;							// Storing the Modal Of The System
+			commands = new Dictionary<int, ICommand>()	// Creating a commands dictionary
             {
                 {(int)CommandEnum.NewFileCommand , new NewFileCommand(m_modal) } // used the enum
             };
         }
-        public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
+
+		/// <summary>
+		/// The function executes a given command ussing the ICommands.
+		/// </summary>
+		/// <param name="commandID">An command enum</param>
+		/// <param name="args">Arguments for the command</param>
+		/// <param name="resultSuccesful">Indication if the execute was successful</param>
+		/// <returns>If succeed - the image's new path, else - an error message</returns>
+		public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
         {
            ICommand command;
            if (commands.TryGetValue(commandID, out command))
