@@ -92,7 +92,23 @@ namespace ImageService
         /* operation triggered by message is writing it to the event log */
         private void NewLogMessage(object sender, Logging.Modal.MessageRecievedEventArgs e)
         {
-            IS_eventLogger.WriteEntry(e.Message);
+            EventLogEntryType stat;
+            switch (e.Status)
+            {
+                case MessageTypeEnum.INFO:
+                    stat = EventLogEntryType.Information;
+                    break;
+                case MessageTypeEnum.WARNING:
+                    stat = EventLogEntryType.Warning;
+                    break;
+                case MessageTypeEnum.FAIL:
+                    stat = EventLogEntryType.FailureAudit;
+                    break;
+                default:
+                    stat = EventLogEntryType.Information;
+                    break;
+            }
+            IS_eventLogger.WriteEntry(e.Message, stat);
         }
         /// <summary>
         /// onStop method, when services stop
