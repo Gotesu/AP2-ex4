@@ -31,6 +31,10 @@
             this.IS_eventLogger = new System.Diagnostics.EventLog();
             ((System.ComponentModel.ISupportInitialize)(this.IS_eventLogger)).BeginInit();
             // 
+            // IS_eventLogger
+            // 
+            this.IS_eventLogger.EntryWritten += new System.Diagnostics.EntryWrittenEventHandler(this.IS_eventLogger_EntryWritten);
+            // 
             // ImageService
             // 
             this.ServiceName = "ImageService";

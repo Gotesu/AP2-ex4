@@ -47,6 +47,7 @@ namespace ImageService
             //taking sourceName and logName from config
             string eventSourceName = ConfigurationManager.AppSettings["SourceName"];
             string logName = ConfigurationManager.AppSettings["LogName"];
+            /*
             if (args.Count() > 0)
             {
                 eventSourceName = args[0];
@@ -55,6 +56,7 @@ namespace ImageService
             {
                 logName = args[1];
             }
+            */
             IS_eventLogger = new System.Diagnostics.EventLog();
             if (!System.Diagnostics.EventLog.SourceExists(eventSourceName))
             {
@@ -86,7 +88,7 @@ namespace ImageService
             logger = new LoggingService();
             //"listening" to the logger's messaging
             logger.MessageRecieved += NewLogMessage;
-            server = new ImageServer(logger);
+            server = new ImageServer(logger, IS_eventLogger);
         }
 
         /* operation triggered by message is writing it to the event log */
@@ -135,6 +137,11 @@ namespace ImageService
             this.OnStart(args);
             Console.ReadLine();
             this.OnStop();
+        }
+
+        private void IS_eventLogger_EntryWritten(object sender, EntryWrittenEventArgs e)
+        {
+
         }
     }
 }

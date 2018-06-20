@@ -1,12 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ImageService.Logging;
-using System.Text.RegularExpressions;
 using ImageService.Infrastructure.Enums;
 using ImageService.Model;
 using ImageService.Server;
@@ -16,10 +11,10 @@ namespace ImageService.Controller.Handlers
 	public class DirectoryHandler : IDirectoryHandler
 	{
 		#region Members
+		public string m_path { get; set; }                 // The Path of directory
 		private IImageController m_controller;              // The Image Processing Controller
 		private ILoggingService m_logging;
 		private FileSystemWatcher m_dirWatcher;             // The Watcher of the Dir
-		private string m_path { get; set; }                 // The Path of directory
 		private int m_tasks;								// the number of running tasks
 		private Object tLock = new Object();
 		#endregion
@@ -91,14 +86,14 @@ namespace ImageService.Controller.Handlers
 				// Stop monitoring
 				m_dirWatcher.EnableRaisingEvents = false;
 				// Stop getting commands
-				((ImageServer)sender).CommandRecieved -= OnCommandRecieved;
+				((DirectoryManager)sender).CommandRecieved -= OnCommandRecieved;
 				// wait for all task to end
 				while (m_tasks > 0)
 					System.Threading.Thread.Sleep(1000);
 				// update logger
 				m_logging.Log("DirectoyHandler is Closed", MessageTypeEnum.INFO);
 				// invoking the DirectoryClose event
-				DirectoryClose.Invoke(this, new DirectoryCloseEventArgs(m_path, "DirectoyHandler is Closed"));
+				DirectoryClose?.Invoke(this, new DirectoryCloseEventArgs(m_path, "DirectoyHandler is Closed"));
 			});
 		}
 
