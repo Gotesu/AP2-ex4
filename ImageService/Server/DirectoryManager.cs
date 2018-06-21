@@ -69,14 +69,5 @@ namespace ImageService.Server
 			// update logger
 			m_logging.Log("Server is Closed", MessageTypeEnum.INFO);
 		}
-
-		/// <summary>
-		/// The method invokes the CommandRecieved event.
-		/// </summary>
-		/// <param name="args">the arguments for the event handler</param>
-		public void WhenCommandRecieved(CommandRecievedEventArgs args)
-		{
-			CommandRecieved?.Invoke(this, args);
-		}
 	}
 }

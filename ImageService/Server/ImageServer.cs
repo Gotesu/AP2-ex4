@@ -42,7 +42,7 @@ namespace ImageService.Server
 			// build the DirectoryManager
 			dm = new DirectoryManager(log, m_config, this.OnDirClosed);
 			// build the Server
-			serv = new Communication.Server(9999, log, m_config.handlers[0]);
+			serv = new Communication.Server(9900, log, m_config.handlers[0]);
 			// set the required event handler
 			eventLogger.EnableRaisingEvents = true;
 			serv.Start(); // start the Server
