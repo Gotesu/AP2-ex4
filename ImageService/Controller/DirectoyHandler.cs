@@ -114,6 +114,7 @@ namespace ImageService.Controller.Handlers
 			int CommandID = (int)CommandEnum.NewFileCommand;
 			// get path to arg[]
 			string[] args = { e.FullPath };
+			System.Threading.Thread.Sleep(1000);
 			ExecuteCommand(CommandID, args);
 		}
 

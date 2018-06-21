@@ -1,15 +1,9 @@
-﻿using ImageService.Infrastructure;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ImageService.Model
 {
@@ -69,12 +63,18 @@ namespace ImageService.Model
 		/// </summary>
 		/// <param name="sourcePath">The string for file's source path</param>
 		/// <param name="destPath">The string for file's destination path</param>
-		public void MoveFile(string sourcePath, string destPath)
+		/// <param name="over">A boolean value, if to override an existing file in destination path</param>
+		public void MoveFile(string sourcePath, string destPath, bool over = false)
 		{
 			// if needed, creates the destination folder
 			CreateFolder(destPath);
+			// create the new path
+			string newFilePath = destPath + @"\" + Path.GetFileName(sourcePath);
+			// check if file exist
+			if (over && File.Exists(newFilePath))
+				File.Delete(newFilePath);
 			// move the file
-			File.Move(sourcePath, destPath + @"\" + Path.GetFileName(sourcePath));
+			File.Move(sourcePath, newFilePath);
 		}
 
 		/// <summary>
@@ -191,8 +191,7 @@ namespace ImageService.Model
 				// create a thumbnail
 				CreateThumbnail(path, OutputFolder() + @"\OutputDir\Thumbnails\" + destPath);
 				// move the image
-				MoveFile(path, OutputFolder() + @"\OutputDir\" + destPath);
-
+				MoveFile(path, OutputFolder() + @"\OutputDir\" + destPath, true);
 
 				// change result to true
 				result = true;
